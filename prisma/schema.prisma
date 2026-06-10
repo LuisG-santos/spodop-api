@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProductType {
+  Fungicida
+  Herbicida
+  Inseticidas
+  Acaricidas
+  Nematicidas
+  Bactericidas
+  Rodenticidas
+}
+
+enum DoseUnit {
+  L_HA  @map("l/ha")
+  G_HA  @map("g/ha")
+  ML_HA @map("mL/ha")
+  KG_HA @map("kg/ha")
+}
+
+model User {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  password   String?
+  createdAt  DateTime    @default(now())
+  updateAt   DateTime    @updatedAt
+  ownerships Ownership[]
+}
+
+model Ownership {
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  name         String
+  totalArea    Decimal
+  longitude    Decimal?
+  latitude     Decimal?
+  createdAt    DateTime      @default(now())
+  updateAt     DateTime      @updatedAt
+  fields       Field[]
+  applications Application[]
+}
+
+model Field {
+  id           String        @id @default(uuid())
+  name         String
+  ownershipId  String
+  ownership    Ownership     @relation(fields: [ownershipId], references: [id])
+  area         Decimal
+  cultivation  String
+  latitude     Decimal?
+  longitude    Decimal?
+  createdAt    DateTime      @default(now())
+  updateAt     DateTime      @updatedAt
+  applications Application[]
+}
+
+model Application {
+  id          String      @id @default(uuid())
+  ownershipId String
+  ownership   Ownership   @relation(fields: [ownershipId], references: [id])
+  fieldId     String?
+  field       Field?      @relation(fields: [fieldId], references: [id])
+  product     String
+  type        ProductType @default(Herbicida)
+  dose        Decimal
+  doseUnit    DoseUnit
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updateAt    DateTime    @updatedAt
+}
