@@ -1,27 +1,19 @@
 import express from "express";
-import db from "./src/db/client.js";
-import bcrypt from "bcrypt";
-import { CreateUserController } from "./src/controllers/createUser.js";
+import { CreateUserController } from "./src/controllers/user/createUser.js";
+import { GetUserByIdController } from "./src/controllers/user/getUserById.js";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/auth/register", async (req, res) => {
- const createUser = new CreateUserController();
- const {statusCode, body} = await createUser.create(req);
-
- res.status(statusCode).json(body)
+  const createUser = new CreateUserController();
+  await createUser.create(req, res);
 });
 
-app.get("/user", async (req, res) => {
-  try {
-    const user = await db.user.findMany();
-    res.status(200).json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error });
-  }
+app.get("/user/:id", async (req, res) => {
+  const getUser = new GetUserByIdController();
+  await getUser.getUser(req, res);
 });
 
 app.listen(3000, () => {
