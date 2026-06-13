@@ -4,6 +4,7 @@ import type { User } from "../../../generated/prisma/client.js";
 export type CreateUserDTO = {
   name: string;
   email: string;
+  phoneNumber: string;
   password: string;
 };
 
@@ -12,9 +13,12 @@ export class PrismaUserRepository {
     return db.user.create({ data });
   }
 
-  async findById(id: string): Promise<User | null>{
-    return db.user.findUnique({
-      where: { id },
+  async findEmailOrPhone(email: string, phoneNumber: string) {
+    return db.user.findFirst({
+      where: {
+        OR: [{email}, {phoneNumber}]
+      }
     });
   }
+
 }

@@ -17,3 +17,11 @@ export const serverError = () => {
     message: "Internal Server Error",
   };
 };
+
+export const ok = (body: Record<string, unknown>) => {
+  return {
+    statusCode: 200,
+    body,
+  };
+};
+
