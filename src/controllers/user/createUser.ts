@@ -3,6 +3,8 @@ import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
+import { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
+import { GetUserByPhoneNumber } from "../../repository/prisma/getUserByPhoneNumber.js";
 
 export class CreateUserController {
   async create(req: Request, res: Response) {
@@ -52,7 +54,10 @@ export class CreateUserController {
 
       const createUserUseCase = new CreateUserUseCase(
         new PrismaUserRepository(),
+        new GetUserByEmail(),
+        new GetUserByPhoneNumber(),
       );
+
       const createdUser = await createUserUseCase.create(dataUser);
 
       return res.status(201).json(createdUser);
