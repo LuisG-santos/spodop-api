@@ -1,8 +1,10 @@
 import express from "express";
 import { CreateUserController } from "./src/controllers/user/createUser.js";
 import { GetUserByIdController } from "./src/controllers/user/getUserById.js";
-
+import cors from "cors";
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
