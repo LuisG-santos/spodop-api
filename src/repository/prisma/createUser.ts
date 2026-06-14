@@ -12,13 +12,4 @@ export class PrismaUserRepository {
   async create(data: CreateUserDTO): Promise<User> {
     return db.user.create({ data });
   }
-
-  async findEmailOrPhone(email: string, phoneNumber: string) {
-    return db.user.findFirst({
-      where: {
-        OR: [{email}, {phoneNumber}]
-      }
-    });
-  }
-
 }
