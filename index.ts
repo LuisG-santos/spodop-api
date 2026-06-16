@@ -1,21 +1,28 @@
 import express from "express";
-import { CreateUserController } from "./src/controllers/user/createUser.js";
-import { GetUserByIdController } from "./src/controllers/user/getUserById.js";
 import cors from "cors";
+import { makeUpdateUserController } from "./src/factories/user/updateUserFactory.js";
+import { makeGetUserByIdController } from "./src/factories/user/getUserByIdFactory.js";
+import { makeCreateUserController } from "./src/factories/user/createUserFactory.js";
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const createUserController = makeCreateUserController();
+const updateUserController = makeUpdateUserController();
+const getUserByIdController = makeGetUserByIdController();
+
 app.post("/auth/register", async (req, res) => {
-  const createUser = new CreateUserController();
-  await createUser.create(req, res);
+  await createUserController.create(req, res);
+});
+
+app.patch("/user/:id", async (req, res) => {
+  await updateUserController.updateUser(req, res);
 });
 
 app.get("/user/:id", async (req, res) => {
-  const getUser = new GetUserByIdController();
-  await getUser.getUser(req, res);
+  await getUserByIdController.getUser(req, res);
 });
 
 app.listen(3000, () => {

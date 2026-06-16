@@ -1,8 +1,8 @@
-import { PrismaGetUserByIdRepository } from "../../repository/prisma/getUserById.js";
+import { GetUserByIdRepository } from "../../repository/prisma/getUserById.js";
 
 export class GetUserByIdUseCase {
-  private repository: PrismaGetUserByIdRepository;
-  constructor(prismaGetUserRepository: PrismaGetUserByIdRepository) {
+  private repository: GetUserByIdRepository;
+  constructor(prismaGetUserRepository: GetUserByIdRepository) {
     this.repository = prismaGetUserRepository;
   }
   async getUserById(id: string) {

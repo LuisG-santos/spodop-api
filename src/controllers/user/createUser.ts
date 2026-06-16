@@ -1,4 +1,4 @@
-import { PrismaUserRepository } from "../../repository/prisma/createUser.js";
+import { CreateUserRepository } from "../../repository/prisma/createUser.js";
 import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
@@ -7,6 +7,10 @@ import { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
 import { GetUserByPhoneNumber } from "../../repository/prisma/getUserByPhoneNumber.js";
 
 export class CreateUserController {
+  private createUserUseCase: CreateUserUseCase
+  constructor(createUser: CreateUserUseCase){
+    this.createUserUseCase = createUser
+  }
   async create(req: Request, res: Response) {
     try {
       const params = req.body;
@@ -57,19 +61,20 @@ export class CreateUserController {
         return res.status(400).json({ message: "Passwords do not match" });
       }
 
-      const createUserUseCase = new CreateUserUseCase(
-        new PrismaUserRepository(),
-        new GetUserByEmail(),
-        new GetUserByPhoneNumber(),
-      );
+      // const createUserUseCase = new CreateUserUseCase(
+      //   new CreateUserRepository(),
+      //   new GetUserByEmail(),
+      //   new GetUserByPhoneNumber(),
+      // );
 
-      const createdUser = await createUserUseCase.create(dataUser);
+      // const createdUser = await createUserUseCase.create(dataUser);
+      const createdUser = await this.createUserUseCase.create(dataUser)
 
       return res.status(201).json(createdUser);
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {
-        res.status(error.statusCode).json({ message: error.message });
+       return res.status(error.statusCode).json({ message: error.message });
       }
       return res.status(500).json({ message: "Internal server error" });
     }

@@ -8,7 +8,7 @@ export type CreateUserDTO = {
   password: string;
 };
 
-export class PrismaUserRepository {
+export class CreateUserRepository {
   async create(data: CreateUserDTO): Promise<User> {
     return db.user.create({ data });
   }
