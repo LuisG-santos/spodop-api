@@ -42,11 +42,16 @@ export class CreateUserController {
           .status(400)
           .json({ message: "Phone number format is not valid" });
       }
-      const passwordIsValid = params.password.length < 6;
-      if (passwordIsValid) {
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
+      const passwordIsInValid = !passwordRegex.test(params.password);
+      if (passwordIsInValid) {
         return res
           .status(400)
-          .json({ message: "Password must be at least 6 characters" });
+          .json({
+            message:
+              "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
+          });
       }
       if (params.password != params.confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match" });
