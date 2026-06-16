@@ -60,14 +60,7 @@ export class CreateUserController {
       if (params.password != params.confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match" });
       }
-
-      // const createUserUseCase = new CreateUserUseCase(
-      //   new CreateUserRepository(),
-      //   new GetUserByEmail(),
-      //   new GetUserByPhoneNumber(),
-      // );
-
-      // const createdUser = await createUserUseCase.create(dataUser);
+      
       const createdUser = await this.createUserUseCase.create(dataUser)
 
       return res.status(201).json(createdUser);
