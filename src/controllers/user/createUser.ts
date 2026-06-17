@@ -1,10 +1,9 @@
-import { CreateUserRepository } from "../../repository/prisma/user/createUser.js";
+
 import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
-import { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
-import { GetUserByPhoneNumber } from "../../repository/prisma/user/getUserByPhoneNumber.js";
+
 
 export class CreateUserController {
   private createUserUseCase: CreateUserUseCase;

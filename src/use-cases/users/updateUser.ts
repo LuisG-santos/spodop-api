@@ -1,4 +1,4 @@
-import { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
+import { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
 import type {
   updateUserDTO,
   UpdateUserRepository,
@@ -7,10 +7,10 @@ import { AppError } from "../../error/error.js";
 import bcrypt from "bcrypt";
 
 export class UpdateUserUseCase {
-  private emailRepository: GetUserByEmail;
+  private emailRepository: GetUserByEmailRepository;
   private updateRepository: UpdateUserRepository;
   constructor(
-    getUserByEmail: GetUserByEmail,
+    getUserByEmail: GetUserByEmailRepository,
     updateUser: UpdateUserRepository,
   ) {
     this.emailRepository = getUserByEmail;
