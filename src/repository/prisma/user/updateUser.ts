@@ -1,5 +1,5 @@
-import db from "../../db/client.js";
-import type { User } from "../../../generated/prisma/client.js";
+import db from "../../../db/client.js";
+import type { User } from "../../../../generated/prisma/client.js";
 export type updateUserDTO = {
   name?: string;
   email?: string;

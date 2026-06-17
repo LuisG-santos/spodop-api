@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import validator from "validator";
 import { UpdateUserUseCase } from "../../use-cases/users/updateUser.js";
-import { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
-import { UpdateUserRepository } from "../../repository/prisma/updateUser.js";
+import { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
+import { UpdateUserRepository } from "../../repository/prisma/user/updateUser.js";
 import { AppError } from "../../error/error.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;

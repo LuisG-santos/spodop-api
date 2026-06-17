@@ -2,11 +2,11 @@ import bcrypt from "bcrypt";
 import {
   CreateUserRepository,
   type CreateUserDTO,
-} from "../../repository/prisma/createUser.js";
+} from "../../repository/prisma/user/createUser.js";
 import { AppError } from "../../error/error.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
-import type { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
-import type { GetUserByPhoneNumber } from "../../repository/prisma/getUserByPhoneNumber.js";
+import type { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
+import type { GetUserByPhoneNumber } from "../../repository/prisma/user/getUserByPhoneNumber.js";
 
 export class CreateUserUseCase {
   private createUserRepository: CreateUserRepository;

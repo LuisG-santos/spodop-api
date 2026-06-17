@@ -1,8 +1,8 @@
-import { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
+import { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
 import type {
   updateUserDTO,
   UpdateUserRepository,
-} from "../../repository/prisma/updateUser.js";
+} from "../../repository/prisma/user/updateUser.js";
 import { AppError } from "../../error/error.js";
 import bcrypt from "bcrypt";
 

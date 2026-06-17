@@ -1,15 +1,15 @@
-import { CreateUserRepository } from "../../repository/prisma/createUser.js";
+import { CreateUserRepository } from "../../repository/prisma/user/createUser.js";
 import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
-import { GetUserByEmail } from "../../repository/prisma/getUserByEmail.js";
-import { GetUserByPhoneNumber } from "../../repository/prisma/getUserByPhoneNumber.js";
+import { GetUserByEmail } from "../../repository/prisma/user/getUserByEmail.js";
+import { GetUserByPhoneNumber } from "../../repository/prisma/user/getUserByPhoneNumber.js";
 
 export class CreateUserController {
-  private createUserUseCase: CreateUserUseCase
-  constructor(createUser: CreateUserUseCase){
-    this.createUserUseCase = createUser
+  private createUserUseCase: CreateUserUseCase;
+  constructor(createUser: CreateUserUseCase) {
+    this.createUserUseCase = createUser;
   }
   async create(req: Request, res: Response) {
     try {
@@ -50,24 +50,22 @@ export class CreateUserController {
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
       const passwordIsInValid = !passwordRegex.test(params.password);
       if (passwordIsInValid) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
-          });
+        return res.status(400).json({
+          message:
+            "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
+        });
       }
       if (params.password != params.confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match" });
       }
-      
-      const createdUser = await this.createUserUseCase.create(dataUser)
+
+      const createdUser = await this.createUserUseCase.create(dataUser);
 
       return res.status(201).json(createdUser);
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {
-       return res.status(error.statusCode).json({ message: error.message });
+        return res.status(error.statusCode).json({ message: error.message });
       }
       return res.status(500).json({ message: "Internal server error" });
     }
