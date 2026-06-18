@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { GetUserByIdUseCase } from "../../use-cases/users/getuserById.js";
+import { checkIfIdIsValid } from "../../helpers/user.js";
 
 export class GetUserByIdController {
   private getUserByIdUseCase: GetUserByIdUseCase;
@@ -9,7 +10,7 @@ export class GetUserByIdController {
   async getUser(req: Request<{ id: string }>, res: Response) {
     try {
       const { id } = req.params;
-      if (!id) {
+      if (!checkIfIdIsValid(id)) {
         return res.status(400).json({ message: "id param is missing" });
       }
 

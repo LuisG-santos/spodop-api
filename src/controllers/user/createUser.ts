@@ -3,8 +3,7 @@ import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
-
-
+import { checkIfEmailIsValid, checkIfPasswordIsValid } from "../../helpers/user.js";
 export class CreateUserController {
   private createUserUseCase: CreateUserUseCase;
   constructor(createUser: CreateUserUseCase) {
@@ -29,9 +28,8 @@ export class CreateUserController {
             .json({ message: `Missing field value ${field}` });
         }
       }
-      const emailIsValid = validator.isEmail(params.email);
 
-      if (!emailIsValid) {
+      if (!checkIfEmailIsValid(params.email)) {
         return res
           .status(400)
           .json({ message: "Invalid e-mail. Please provider a valid one" });
@@ -45,10 +43,8 @@ export class CreateUserController {
           .status(400)
           .json({ message: "Phone number format is not valid" });
       }
-      const passwordRegex =
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
-      const passwordIsInValid = !passwordRegex.test(params.password);
-      if (passwordIsInValid) {
+  
+      if (!checkIfPasswordIsValid(params.password)) {
         return res.status(400).json({
           message:
             "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",

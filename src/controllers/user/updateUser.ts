@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import validator from "validator";
 import { UpdateUserUseCase } from "../../use-cases/users/updateUser.js";
 import { AppError } from "../../error/error.js";
+import { checkIfEmailIsValid, checkIfIdIsValid, checkIfPasswordIsValid } from "../../helpers/user.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
   constructor(updateUserUseCase: UpdateUserUseCase) {
@@ -9,17 +10,15 @@ export class UpdateUserController {
   }
   async updateUser(req: Request<{ id: string }>, res: Response) {
     try {
-      const updateUserParams = req.body;
+      const params = req.body;
       const userId = req.params.id;
 
-      const idIsValid = validator.isUUID(userId);
-
-      if (!idIsValid) {
+      if (!checkIfIdIsValid(userId)) {
         return res.status(400).json({ message: "Id is not valid" });
       }
       const allowedFields = ["name", "email", "phoneNumber", "password"];
 
-      const someFieldsNotAllowed = Object.keys(updateUserParams).some(
+      const someFieldsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       );
       if (someFieldsNotAllowed) {
@@ -28,15 +27,9 @@ export class UpdateUserController {
           .json({ message: "Some provided field is not allowed" });
       }
 
-      if (updateUserParams.password) {
-        const passwordRegex =
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/;
-
-        const passwordIsInValid = !passwordRegex.test(
-          updateUserParams.password,
-        );
-
-        if (passwordIsInValid) {
+      if (params.password) {
+        
+        if (!checkIfPasswordIsValid(params.password)) {
           return res.status(400).json({
             message:
               "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
@@ -44,10 +37,8 @@ export class UpdateUserController {
         }
       }
 
-      if (updateUserParams.email) {
-        const emailIsValid = validator.isEmail(updateUserParams.email);
-
-        if (!emailIsValid) {
+      if (params.email) {
+        if (!checkIfEmailIsValid(params.email)) {
           return res
             .status(400)
             .json({ message: "Invalid e-mail. Please provider a valid one" });
@@ -56,7 +47,7 @@ export class UpdateUserController {
 
       const updatedUser = await this.updateUserUseCase.updateUser(
         userId,
-        updateUserParams,
+        params,
       );
 
       return res.status(200).json(updatedUser);
