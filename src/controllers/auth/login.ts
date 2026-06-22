@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import type { LoginUseCase } from "../../use-cases/auth/login.js";
-import validator from "validator";
 import { AppError } from "../../error/error.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
 
@@ -13,15 +12,6 @@ export class LoginController {
     try {
       const params = req.body;
       const requiredFields = ["email", "password"];
-
-      const someFieldsNotAllowed = Object.keys(params).some(
-        (field) => !requiredFields.includes(field),
-      );
-      if (someFieldsNotAllowed) {
-        return res
-          .status(400)
-          .json({ message: "Some provided field is not allowed" });
-      }
 
       for (const field of requiredFields) {
         if (!params[field] || params[field].trim().length === 0) {
