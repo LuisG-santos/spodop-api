@@ -2,7 +2,13 @@ import type { Request, Response } from "express";
 import validator from "validator";
 import { UpdateUserUseCase } from "../../use-cases/users/updateUser.js";
 import { AppError } from "../../error/error.js";
-import { checkIfEmailIsValid, checkIfIdIsValid, checkIfPasswordIsValid } from "../../helpers/user.js";
+import {
+  checkIfEmailIsValid,
+  checkIfIdIsValid,
+  checkIfPasswordIsValid,
+  checkIfPhoneNumberIsValid,
+} from "../../helpers/user.js";
+import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
   constructor(updateUserUseCase: UpdateUserUseCase) {
@@ -27,21 +33,29 @@ export class UpdateUserController {
           .json({ message: "Some provided field is not allowed" });
       }
 
-      if (params.password) {
-        
-        if (!checkIfPasswordIsValid(params.password)) {
-          return res.status(400).json({
-            message:
-              "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
-          });
-        }
-      }
-
       if (params.email) {
         if (!checkIfEmailIsValid(params.email)) {
           return res
             .status(400)
             .json({ message: "Invalid e-mail. Please provider a valid one" });
+        }
+      }
+
+      if (params.phoneNumber) {
+        const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber);
+        if (!checkIfPhoneNumberIsValid(normalizedPhoneNumber)) {
+          return res
+            .status(400)
+            .json({ message: "Invalid phone number format" });
+        }
+      }
+
+      if (params.password) {
+        if (!checkIfPasswordIsValid(params.password)) {
+          return res.status(400).json({
+            message:
+              "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
+          });
         }
       }
 
