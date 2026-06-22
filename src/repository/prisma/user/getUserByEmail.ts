@@ -3,7 +3,7 @@ import type { User } from "../../../../generated/prisma/client.js";
 export class GetUserByEmailRepository {
   async getEmail(email: string): Promise<User | null> {
     return await db.user.findUnique({
-      where: { email },
+      where: { email }
     });
   }
 }
