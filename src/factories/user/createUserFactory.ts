@@ -5,11 +5,15 @@ import { GetUserByPhoneNumberRepository } from "../../repository/prisma/user/get
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 
 export const makeCreateUserController = () => {
-  return new CreateUserController(
-    new CreateUserUseCase(
-      new CreateUserRepository(),
-      new GetUserByEmailRepository(),
-      new GetUserByPhoneNumberRepository(),
-    ),
+  const createUserRepository = new CreateUserRepository();
+  const getUserByEmailRepository = new GetUserByEmailRepository();
+  const getUserByPhoneNumberRepository = new GetUserByPhoneNumberRepository();
+  const createUserUseCase = new CreateUserUseCase(
+    createUserRepository,
+    getUserByEmailRepository,
+    getUserByPhoneNumberRepository,
   );
+  const createUserController = new CreateUserController(createUserUseCase);
+
+  return createUserController;
 };
