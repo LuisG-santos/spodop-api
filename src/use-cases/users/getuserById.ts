@@ -1,4 +1,4 @@
-import { GetUserByIdRepository } from "../../repository/prisma/user/getUserById.js";
+import type{ GetUserByIdRepository } from "../../repository/prisma/user/getUserById.js";
 
 export class GetUserByIdUseCase {
   private repository: GetUserByIdRepository;
