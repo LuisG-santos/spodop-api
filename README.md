@@ -1,6 +1,6 @@
 # AgroGestor — API
 
-> 🚧 Projeto em desenvolvimento ativo
+> Projeto em desenvolvimento ativo
 
 Backend da plataforma **AgroGestor** — sistema web voltado ao agronegócio para monitoramento climático, sugestão de janelas de aplicação de defensivos agrícolas, gestão de propriedades e talhões e geração de documentos de aplicação.
 
@@ -14,12 +14,12 @@ Backend da plataforma **AgroGestor** — sistema web voltado ao agronegócio par
 
 ## Funcionalidades
 
-- 🌦️ **Monitoramento climático** — consulta de condições meteorológicas por propriedade
-- 🪣 **Janelas de aplicação** — sugestão de períodos ideais para aplicação de defensivos com base no clima
-- 🏡 **Gestão de propriedades e talhões** — cadastro, edição e acompanhamento de propriedades rurais e seus talhões
-- 📋 **Registro de aplicações** — controle de produtos, doses, tipos (Fungicida, Herbicida, Inseticida, etc.) e notas por aplicação
-- 📄 **Geração de documentos** — exportação dos registros de aplicação
-- 🤖 **IA (em breve)** — integração com a Claude API para assistência inteligente ao produtor
+- **Monitoramento climático** — consulta de condições meteorológicas por propriedade
+- **Janelas de aplicação** — sugestão de períodos ideais para aplicação de defensivos com base no clima
+- **Gestão de propriedades e talhões** — cadastro, edição e acompanhamento de propriedades rurais e seus talhões
+- **Registro de aplicações** — controle de produtos, doses, tipos (Fungicida, Herbicida, Inseticida, etc.) e notas por aplicação
+- **Geração de documentos** — exportação dos registros de aplicação
+- **IA (em breve)** — integração com a Claude API para assistência inteligente ao produtor
 
 ---
 
@@ -31,7 +31,7 @@ Backend da plataforma **AgroGestor** — sistema web voltado ao agronegócio par
 | Runtime | Node.js |
 | Framework | Express v5 |
 | ORM | Prisma v7 |
-| Banco de dados | PostgreSQL |
+| Banco de dados | Neon |
 | Autenticação | JWT + bcrypt |
 | Validação | validator.js |
 | Documentação | Swagger UI |
