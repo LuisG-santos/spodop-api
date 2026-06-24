@@ -6,16 +6,16 @@ import {
 import { AppError } from "../../error/error.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 import type { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
-import type { GetUserByPhoneNumber } from "../../repository/prisma/user/getUserByPhoneNumber.js";
+import type { GetUserByPhoneNumberRepository } from "../../repository/prisma/user/getUserByPhoneNumber.js";
 
 export class CreateUserUseCase {
   private createUserRepository: CreateUserRepository;
   private getUserByEmailRepository: GetUserByEmailRepository;
-  private getUserByPhoneNumberRepository: GetUserByPhoneNumber;
+  private getUserByPhoneNumberRepository: GetUserByPhoneNumberRepository;
   constructor(
     createUserRepository: CreateUserRepository,
     getUserByEmail: GetUserByEmailRepository,
-    getUserByPhoneNumber: GetUserByPhoneNumber,
+    getUserByPhoneNumber: GetUserByPhoneNumberRepository,
   ) {
     this.createUserRepository = createUserRepository;
     this.getUserByEmailRepository = getUserByEmail;
