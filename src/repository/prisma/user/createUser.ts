@@ -1,5 +1,5 @@
 import db from "../../../db/client.js";
-import type { User } from "../../../../generated/prisma/client.js";
+import { safeUserSelect } from "../../../types/typeUser.js";
 
 export type CreateUserDTO = {
   name: string;
@@ -9,7 +9,10 @@ export type CreateUserDTO = {
 };
 
 export class CreateUserRepository {
-  async create(data: CreateUserDTO): Promise<User> {
-    return db.user.create({ data });
+  async create(data: CreateUserDTO) {
+    return db.user.create({ 
+      data,
+      select: safeUserSelect
+    });
   }
 }
