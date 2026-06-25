@@ -23,12 +23,22 @@ export class LoginUseCase {
       throw new AppError("Email or password incorrect", 401);
     }
 
-    const payload = { sub: user.id, name: user.name, email: user.email };
+    const payload = {
+      sub: user.id,
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+    };
     const jwtToken = jwt.sign(payload, this.jwtSecret, { expiresIn: "1h" });
 
     return {
       token: jwtToken,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+      },
     };
   }
 }
