@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authMiddleware } from "../../middlewares/auth.js";
 import {
   makeGetUserByIdController,
   makeUpdateUserController,
@@ -11,8 +12,8 @@ const getUserByIdController = makeGetUserByIdController();
 router.patch("/:id", async(req, res) =>{
   await updateUserController.updateUser(req,res)
 } )
-router.get("/:id", async (req, res) => {
-  await getUserByIdController.getUser(req, res);
+router.get("/me", authMiddleware ,(req, res) => {
+   getUserByIdController.getUser(req, res);
 });
 
 export default router;
