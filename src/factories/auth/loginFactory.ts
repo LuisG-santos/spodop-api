@@ -4,7 +4,10 @@ import { LoginUseCase } from "../../use-cases/auth/login.js";
 
 export const makeLoginController = () => {
   const secretKey = process.env.JWT_SECRET_KEY!;
-  return new LoginController(
-    new LoginUseCase(new GetUserByEmailRepository(), secretKey),
-  );
+  
+  const getUserByEmailRepository = new GetUserByEmailRepository();
+  const loginUseCase = new LoginUseCase(getUserByEmailRepository, secretKey);
+  const loginController = new LoginController(loginUseCase)
+
+  return loginController;
 };
