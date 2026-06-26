@@ -45,9 +45,9 @@ model Ownership {
   userId       String
   user         User          @relation(fields: [userId], references: [id])
   name         String
-  totalArea    Decimal
-  longitude    Decimal?
-  latitude     Decimal?
+  totalArea    Decimal       @db.Decimal(10, 2)
+  longitude    Decimal?      @db.Decimal(9, 6)
+  latitude     Decimal?      @db.Decimal(9, 6)
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt
   fields       Field[]
@@ -59,10 +59,10 @@ model Field {
   name         String
   ownershipId  String
   ownership    Ownership     @relation(fields: [ownershipId], references: [id])
-  area         Decimal
+  area         Decimal       @db.Decimal(10, 2)
   cultivation  String
-  latitude     Decimal?
-  longitude    Decimal?
+  latitude     Decimal?      @db.Decimal(9, 6)
+  longitude    Decimal?      @db.Decimal(9, 6)
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt
   applications Application[]
@@ -76,7 +76,7 @@ model Application {
   field       Field?      @relation(fields: [fieldId], references: [id])
   product     String
   type        ProductType @default(Herbicida)
-  dose        Decimal
+  dose        Decimal     @db.Decimal(8, 2)
   doseUnit    DoseUnit
   notes       String?
   createdAt   DateTime    @default(now())
