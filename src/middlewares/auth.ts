@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import type { AuthUser } from "../types/express.js";
 
 export const authMiddleware = (
   req: Request,
@@ -21,7 +22,7 @@ export const authMiddleware = (
   }
 
   try {
-    const decode = jwt.verify(token, secretKey);
+    const decode = jwt.verify(token, secretKey) as AuthUser;
 
     if (typeof decode === "string" || !decode.sub) {
       return res.status(401).json({ message: "Invalid token payload" });
