@@ -1,46 +1,89 @@
 import resend from '../lib/resend.js'
 export const sendResetPassworEmail = async (email: string, code:string) => {
     await resend.emails.send({
-        from: "spodop.resetpassword@support.com",
+        from: "onboarding@resend.dev",
         to: email,
         subject: "Código de verificação para resetar sua senha",
-        html: `
-            <!DOCTYPE html>
-            <html lang="pt-BR">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            </head>
-            <body style="margin:0; padding:0; background-color:#f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-                <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5; padding:40px 20px;">
+        html: resetPasswordHtml(code)
+    });
+}
+
+export const sendResetPassworEmaiTest = async () => {
+    await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: "luisgustavo.nunespc@gmail.com",
+        subject: "Código de verificação para resetar sua senha",
+        html: resetPasswordHtml("877321")
+    });
+}
+
+function resetPasswordHtml(code: string) {
+    return `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;">
+        <tr>
+            <td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" style="max-width:500px;">
+                    <!-- Header verde -->
                     <tr>
-                        <td align="center">
-                            <table width="100%" cellpadding="0" cellspacing="0" style="max-width:460px; background-color:#ffffff; border-radius:12px; padding:48px 40px; text-align:center;">
-                                <tr>
-                                    <td>
-                                        <h1 style="margin:0 0 8px; font-size:22px; font-weight:600; color:#18181b;">
-                                            Redefinição de senha
-                                        </h1>
-                                        <p style="margin:0 0 32px; font-size:15px; color:#71717a; line-height:1.5;">
-                                            Use o código abaixo para redefinir sua senha. Ele expira em alguns minutos.
-                                        </p>
-                                        <div style="background-color:#f4f4f5; border-radius:8px; padding:20px; margin:0 0 32px;">
-                                            <span style="font-size:32px; font-weight:700; letter-spacing:6px; color:#18181b;">
-                                                ${code}
-                                            </span>
-                                        </div>
-                                        <p style="margin:0; font-size:13px; color:#a1a1aa; line-height:1.5;">
-                                            Se você não solicitou isso, ignore este email.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
+                        <td align="center" style="background-color:#22c55e; padding:24px 20px;">
+                            <span style="font-size:26px; vertical-align:middle;">&#127793;</span>
+                            <span style="font-size:22px; font-weight:700; color:#ffffff; vertical-align:middle; letter-spacing:1px;">
+                                SpoDop
+                            </span>
+                        </td>
+                    </tr>
+                    <!-- Corpo -->
+                    <tr>
+                        <td style="background-color:#ffffff; padding:32px 28px 0;">
+                            <p style="margin:0 0 24px; font-size:15px; color:#1a1a1a; line-height:1.6;">
+                                Olá,
+                            </p>
+                            <p style="margin:0 0 6px; font-size:15px; color:#1a1a1a; line-height:1.6;">
+                                Você solicitou a redefinição da sua senha.
+                            </p>
+                            <p style="margin:0 0 20px; font-size:15px; color:#1a1a1a; line-height:1.6;">
+                                Este é o seu código de verificação:
+                            </p>
+                            <p style="margin:0 0 28px; font-size:34px; font-weight:700; color:#22c55e; letter-spacing:4px;">
+                                ${code}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:#ffffff; padding:0 28px;">
+                            <p style="margin:0 0 24px; font-size:14px; color:#1a1a1a; line-height:1.6;">
+                                O código de verificação é válido por <strong>5 minutos</strong>. Não compartilhe este código com ninguém.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:#ffffff; padding:0 28px 32px;">
+                            <p style="margin:0; font-size:14px; color:#1a1a1a; line-height:1.6;">
+                                Se você não solicitou esta redefinição, entre em contato com o suporte imediatamente.
+                            </p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="border-top:1px solid #e5e5e5; padding:16px 28px;">
+                            <p style="margin:0; font-size:13px; color:#22c55e;">
+                                Suporte &bull; SpoDop
+                            </p>
                         </td>
                     </tr>
                 </table>
-            </body>
-            </html>
-        `
-    });
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
 }
    
