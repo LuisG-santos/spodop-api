@@ -25,7 +25,7 @@ function resetPasswordHtml(code: string) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0; padding:0; background-color:#ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<body style="margin:0; padding:0; background-color:#ffffff; font-family: 'Georgia', 'Times New Roman', Times, serif;">
     <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;">
         <tr>
             <td align="center">
@@ -33,10 +33,7 @@ function resetPasswordHtml(code: string) {
                     <!-- Header verde -->
                     <tr>
                         <td align="center" style="background-color:#22c55e; padding:24px 20px;">
-                            <span style="font-size:26px; vertical-align:middle;">&#127793;</span>
-                            <span style="font-size:22px; font-weight:700; color:#ffffff; vertical-align:middle; letter-spacing:1px;">
-                                SpoDop
-                            </span>
+                            <span style="font-size:22px; font-weight:700; letter-spacing:1px;">SpoDop</span>
                         </td>
                     </tr>
                     <!-- Corpo -->
@@ -73,9 +70,9 @@ function resetPasswordHtml(code: string) {
                     <!-- Footer -->
                     <tr>
                         <td align="center" style="border-top:1px solid #e5e5e5; padding:16px 28px;">
-                            <p style="margin:0; font-size:13px; color:#22c55e;">
+                            <a href="https://google.com" style="margin:0; font-size:13px; color:#22c55e;">
                                 Suporte &bull; SpoDop
-                            </p>
+                            </a>
                         </td>
                     </tr>
                 </table>
