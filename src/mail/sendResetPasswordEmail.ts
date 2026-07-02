@@ -1,23 +1,14 @@
 import resend from '../lib/resend.js'
-export const sendResetPassworEmail = async (email: string, code:string) => {
+export const sendResetPassworEmail = async (email: string, code:string, name:string) => {
     await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: "reset-password@spodop.com.br",
         to: email,
         subject: "Código de verificação para resetar sua senha",
-        html: resetPasswordHtml(code)
+        html: resetPasswordHtml(code, name)
     });
 }
 
-export const sendResetPassworEmaiTest = async () => {
-    await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "luisgustavo.nunespc@gmail.com",
-        subject: "Código de verificação para resetar sua senha",
-        html: resetPasswordHtml("877321")
-    });
-}
-
-function resetPasswordHtml(code: string) {
+function resetPasswordHtml(code: string, name:string) {
     return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -33,14 +24,14 @@ function resetPasswordHtml(code: string) {
                     <!-- Header verde -->
                     <tr>
                         <td align="center" style="background-color:#22c55e; padding:24px 20px;">
-                            <span style="font-size:22px; font-weight:700; letter-spacing:1px;">SpoDop</span>
+                            <span style="font-size:22px; font-weight:700;font-family: -apple-system; letter-spacing:1px;">🐛SPODOP</span>
                         </td>
                     </tr>
                     <!-- Corpo -->
                     <tr>
                         <td style="background-color:#ffffff; padding:32px 28px 0;">
                             <p style="margin:0 0 24px; font-size:15px; color:#1a1a1a; line-height:1.6;">
-                                Olá,
+                                Olá, ${name}
                             </p>
                             <p style="margin:0 0 6px; font-size:15px; color:#1a1a1a; line-height:1.6;">
                                 Você solicitou a redefinição da sua senha.
@@ -48,7 +39,7 @@ function resetPasswordHtml(code: string) {
                             <p style="margin:0 0 20px; font-size:15px; color:#1a1a1a; line-height:1.6;">
                                 Este é o seu código de verificação:
                             </p>
-                            <p style="margin:0 0 28px; font-size:34px; font-weight:700; color:#22c55e; letter-spacing:4px;">
+                            <p style="margin:0 0 28px; font-size:34px; font-weight:700; color:#22c55e; letter-spacing:4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                                 ${code}
                             </p>
                         </td>
