@@ -1,45 +1,62 @@
 import { AppError } from "../../error/error.js";
-import { sendResetPassworEmail } from "../../mail/sendResetPasswordEmail.js";
-import type { UpsertForgotPasswordRepository } from "../../repository/prisma/resetPassword/upsertForgotPassword.js";
+import type { DeleteForgotPasswordCode } from "../../repository/prisma/resetPassword/deleteForgotPasswordCode.js";
+import type { GetForgotPasswordCodeByUserId } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
+import type { UpdateUserPasswordRepository } from "../../repository/prisma/resetPassword/updateUserPassword.js";
 import type { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
-import crypto from "crypto";
-
-export class ForgotPasswordUseCase {
-  private getUserByEmail: GetUserByEmailRepository;
-  private upsertForgotPassword: UpsertForgotPasswordRepository;
+import bcrypt from "bcrypt";
+export class ResetPasswordUseCase {
+  private updateUserPasswordRepository: UpdateUserPasswordRepository;
+  private getUserByEmailRepository: GetUserByEmailRepository;
+  private getForgotPasswordCodeRepository: GetForgotPasswordCodeByUserId;
+  private deleteForgotPasswordCodeRepository: DeleteForgotPasswordCode;
   constructor(
+    updateUserPassword: UpdateUserPasswordRepository,
     getUserByEmail: GetUserByEmailRepository,
-    upsertForgotPassword: UpsertForgotPasswordRepository,
+    getForgotPasswordCode: GetForgotPasswordCodeByUserId,
+    deleteForgotPasswordCode: DeleteForgotPasswordCode,
   ) {
-    this.getUserByEmail = getUserByEmail;
-    this.upsertForgotPassword = upsertForgotPassword;
+    this.updateUserPasswordRepository = updateUserPassword;
+    this.getUserByEmailRepository = getUserByEmail;
+    this.getForgotPasswordCodeRepository = getForgotPasswordCode;
+    this.deleteForgotPasswordCodeRepository = deleteForgotPasswordCode;
   }
 
-  async forgotPassword(email: string): Promise<void> {
-    const user = await this.getUserByEmail.getEmail(email);
+  async updatePassword(
+    email: string,
+    code: string,
+    newPassword: string,
+  ): Promise<void> {
+    const user = await this.getUserByEmailRepository.getEmail(email);
 
     if (!user) {
-      throw new AppError("User not found", 404);
+      throw new AppError("Invalid or expired code", 400);
     }
 
-    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const bytes = crypto.randomBytes(6);
-
-    const code = Array.from(
-      bytes,
-      (byte) => charset[byte % charset.length],
-    ).join("");
-
-    const timestamp = Date.now() + 3 * 60 * 1000;
-
-    const expirationTime = new Date(timestamp);
-
-    const saveCode = await this.upsertForgotPassword.upsert(
+    const userCode = await this.getForgotPasswordCodeRepository.getCode(
       user.id,
-      code,
-      expirationTime,
     );
 
-    await sendResetPassworEmail(email, saveCode.code, user.name);
+    if (!userCode) {
+      throw new AppError("Invalid or expired code", 400);
+    }
+
+    const expirationCode = new Date() > userCode?.expiresAt;
+
+    if (expirationCode) {
+      throw new AppError("Invalid or expired code", 400);
+    }
+
+    if (code !== userCode.code) {
+      throw new AppError("Invalid or expired code", 400);
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await this.updateUserPasswordRepository.updatePassword(
+      userCode.userId,
+      hashedPassword,
+    );
+
+    await this.deleteForgotPasswordCodeRepository.delete(userCode.userId);
   }
 }
