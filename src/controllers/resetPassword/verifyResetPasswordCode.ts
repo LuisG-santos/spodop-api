@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { VerifyResetPasswordCodeUseCase } from "../../use-cases/resetPassword/verifyResetPassword.js";
+import type { VerifyResetPasswordCodeUseCase } from "../../use-cases/resetPassword/verifyResetPasswordCode.js";
 import { AppError } from "../../error/error.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
 import { invalidEmailResponse } from "../../helpers/http.js";
