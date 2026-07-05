@@ -1,7 +1,7 @@
 import db from "../../../db/client.js";
 
 export class GetForgotPasswordCodeByUserId{
-    async getResetPasswordCodeuser(userId: string){
+    async getCode(userId: string){
         return db.passwordResetToken.findUnique({
             where: {userId}
         })
