@@ -4,14 +4,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export class LoginUseCase {
-  private emailRepository: GetUserByEmailRepository;
+  private getUserByEmailRepository: GetUserByEmailRepository;
   private jwtSecret: string;
   constructor(getByEmail: GetUserByEmailRepository, jwtSecret: string) {
-    this.emailRepository = getByEmail;
+    this.getUserByEmailRepository = getByEmail;
     this.jwtSecret = jwtSecret;
   }
   async login(email: string, password: string) {
-    const user = await this.emailRepository.getEmail(email);
+    const user = await this.getUserByEmailRepository.getEmail(email);
 
     if (!user) {
       throw new AppError("Email or password incorrect", 401);

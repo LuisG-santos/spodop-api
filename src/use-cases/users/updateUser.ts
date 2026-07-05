@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 import type { GetUserByPhoneNumberRepository } from "../../repository/prisma/user/getUserByPhoneNumber.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class UpdateUserUseCase {
-  private emailRepository: GetUserByEmailRepository;
+  private getUserByEmailRepository: GetUserByEmailRepository;
   private updateRepository: UpdateUserRepository;
   private phoneNumberRepository: GetUserByPhoneNumberRepository;
   constructor(
@@ -16,7 +16,7 @@ export class UpdateUserUseCase {
     updateUser: UpdateUserRepository,
     getUserByPhoneNumber: GetUserByPhoneNumberRepository,
   ) {
-    this.emailRepository = getUserByEmail;
+    this.getUserByEmailRepository = getUserByEmail;
     this.updateRepository = updateUser;
     this.phoneNumberRepository = getUserByPhoneNumber;
   }
@@ -27,7 +27,7 @@ export class UpdateUserUseCase {
       : undefined;
 
     const [existingEmail, existingPhone] = await Promise.all([
-      params.email ? this.emailRepository.getEmail(params.email) : null,
+      params.email ? this.getUserByEmailRepository.getEmail(params.email) : null,
       normalizedPhone
         ? this.phoneNumberRepository.getPhoneNumber(normalizedPhone)
         : null,
