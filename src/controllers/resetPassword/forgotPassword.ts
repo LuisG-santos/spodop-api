@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ForgotPasswordUseCase } from "../../use-cases/resetPassword/resetPassword.js";
+import type { ForgotPasswordUseCase } from "../../use-cases/resetPassword/forgotPassword.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
 import { AppError } from "../../error/error.js";
 
@@ -19,9 +19,11 @@ export class ForgotPasswordController {
           .json({ message: "Invalid e-mail. Please provider a valid one" });
       }
 
-        await this.forgotPassworduseCase.forgotPassword(email);
+      await this.forgotPassworduseCase.forgotPassword(email);
 
-      return res.status(200).json({message: 'If the email exists, a code has been sent'});
+      return res
+        .status(200)
+        .json({ message: "If the email exists, a code has been sent" });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json(error.message);
