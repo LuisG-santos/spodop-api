@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import validator from "validator";
 import { UpdateUserUseCase } from "../../use-cases/users/updateUser.js";
 import { AppError } from "../../error/error.js";
 import {
@@ -8,6 +7,7 @@ import {
   checkIfPasswordIsValid,
   checkIfPhoneNumberIsValid,
 } from "../../helpers/user.js";
+import { invalidEmailResponse } from "../../helpers/http.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
@@ -35,9 +35,7 @@ export class UpdateUserController {
 
       if (params.email) {
         if (!checkIfEmailIsValid(params.email)) {
-          return res
-            .status(400)
-            .json({ message: "Invalid e-mail. Please provider a valid one" });
+          return invalidEmailResponse(res)
         }
       }
 

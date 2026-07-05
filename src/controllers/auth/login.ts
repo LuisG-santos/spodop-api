@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import type { LoginUseCase } from "../../use-cases/auth/login.js";
 import { AppError } from "../../error/error.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
-
+import { invalidEmailResponse } from "../../helpers/http.js";
 export class LoginController {
   private loginUseCase: LoginUseCase;
   constructor(loginUser: LoginUseCase) {
@@ -23,9 +23,7 @@ export class LoginController {
 
       if (params.email) {
         if (!checkIfEmailIsValid(params.email)) {
-          return res
-            .status(400)
-            .json({ message: "Invalid e-mail. Please provider a valid one" });
+          return invalidEmailResponse(res);
         }
       }
 
