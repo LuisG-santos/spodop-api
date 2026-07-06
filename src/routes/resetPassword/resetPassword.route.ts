@@ -1,5 +1,5 @@
 import { Router} from "express";
-import { makeForgotPasswordController } from "../../factories/resetPassword/resetPasswordFactory.js";
+import { makeForgotPasswordController } from "../../factories/resetPassword/forgotPasswordFactory.js";
 
 const router = Router();
 const forgotPasswordController = makeForgotPasswordController()
