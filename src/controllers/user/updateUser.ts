@@ -7,17 +7,17 @@ import {
   checkIfPasswordIsValid,
   checkIfPhoneNumberIsValid,
 } from "../../helpers/user.js";
-import { invalidEmailResponse } from "../../helpers/http.js";
+import { invalidEmailResponse, invalidPasswordResponse, invalidPhoneNumberResponse } from "../../helpers/http.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
   constructor(updateUserUseCase: UpdateUserUseCase) {
     this.updateUserUseCase = updateUserUseCase;
   }
-  async updateUser(req: Request<{ id: string }>, res: Response) {
+  async updateUser(req: Request, res: Response) {
     try {
       const params = req.body;
-      const userId = req.params.id;
+      const userId = req.user!.sub
 
       if (!checkIfIdIsValid(userId)) {
         return res.status(400).json({ message: "Id is not valid" });
@@ -27,6 +27,7 @@ export class UpdateUserController {
       const someFieldsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       );
+      
       if (someFieldsNotAllowed) {
         return res
           .status(400)
@@ -42,18 +43,13 @@ export class UpdateUserController {
       if (params.phoneNumber) {
         const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber);
         if (!checkIfPhoneNumberIsValid(normalizedPhoneNumber)) {
-          return res
-            .status(400)
-            .json({ message: "Invalid phone number format" });
+          return invalidPhoneNumberResponse(res)
         }
       }
 
       if (params.password) {
         if (!checkIfPasswordIsValid(params.password)) {
-          return res.status(400).json({
-            message:
-              "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
-          });
+          return invalidPasswordResponse(res)
         }
       }
 
@@ -63,6 +59,7 @@ export class UpdateUserController {
       );
 
       return res.status(200).json(updatedUser);
+
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {

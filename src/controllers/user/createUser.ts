@@ -3,7 +3,8 @@ import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
-import { checkIfEmailIsValid, checkIfPasswordIsValid } from "../../helpers/user.js";
+import { checkIfEmailIsValid, checkIfPasswordIsValid, checkIfPhoneNumberIsValid } from "../../helpers/user.js";
+import { invalidEmailResponse, invalidPhoneNumberResponse } from "../../helpers/http.js";
 export class CreateUserController {
   private createUserUseCase: CreateUserUseCase;
   constructor(createUser: CreateUserUseCase) {
@@ -30,25 +31,15 @@ export class CreateUserController {
       }
 
       if (!checkIfEmailIsValid(params.email)) {
-        return res
-          .status(400)
-          .json({ message: "Invalid e-mail. Please provider a valid one" });
+        return invalidEmailResponse(res)
       }
-      const phoneNumberIsValid = validator.isMobilePhone(
-        params.phoneNumber,
-        "pt-BR",
-      );
-      if (!phoneNumberIsValid) {
-        return res
-          .status(400)
-          .json({ message: "Phone number format is not valid" });
+      
+      if (!checkIfPhoneNumberIsValid(params.phoneNumber)) {
+        return invalidPhoneNumberResponse(res)
       }
   
       if (!checkIfPasswordIsValid(params.password)) {
-        return res.status(400).json({
-          message:
-            "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
-        });
+        return invalidPhoneNumberResponse(res)
       }
       if (params.password != params.confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match" });

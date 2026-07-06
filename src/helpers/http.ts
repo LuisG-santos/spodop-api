@@ -12,3 +12,7 @@ export const invalidPasswordResponse = (res: Response) => {
       "Password must be at least 6 characters, 1 uppercase letter, 1 number and 1 special character.",
   });
 };
+
+export const invalidPhoneNumberResponse = (res: Response) => {
+  return res.status(400).json({ message: "Phone number format is not valid" });
+};
