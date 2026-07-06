@@ -4,7 +4,6 @@ import cors from "cors";
 import userRoutes from "./src/routes/user/user.routes.js";
 import authRoutes from "./src/routes/auth/auth.routes.js";
 import ownershipRoutes from "./src/routes/ownership/ownership.route.js"
-import forgotPasswordRoutes from './src/routes/resetPassword/resetPassword.route.js'
 
 const app = express();
 app.use(cors());
@@ -16,7 +15,7 @@ if (!process.env.JWT_SECRET_KEY) {
 }
 
 app.use("/user", userRoutes);
-app.use("/auth", authRoutes,forgotPasswordRoutes);
+app.use("/auth", authRoutes);
 app.use("/ownership", ownershipRoutes);
 
 
