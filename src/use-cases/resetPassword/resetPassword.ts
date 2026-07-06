@@ -1,18 +1,18 @@
 import { AppError } from "../../error/error.js";
 import type { DeleteForgotPasswordCodeRepository } from "../../repository/prisma/resetPassword/deleteForgotPasswordCode.js";
-import type { GetForgotPasswordCodeByUserId } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
+import type { GetForgotPasswordCodeByUserIdRepository } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
 import type { UpdateUserPasswordRepository } from "../../repository/prisma/resetPassword/updateUserPassword.js";
 import type { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
 import bcrypt from "bcrypt";
 export class ResetUserPasswordUseCase {
   private updateUserPasswordRepository: UpdateUserPasswordRepository;
   private getUserByEmailRepository: GetUserByEmailRepository;
-  private getForgotPasswordCodeRepository: GetForgotPasswordCodeByUserId;
+  private getForgotPasswordCodeRepository: GetForgotPasswordCodeByUserIdRepository;
   private deleteForgotPasswordCodeRepository: DeleteForgotPasswordCodeRepository;
   constructor(
     updateUserPassword: UpdateUserPasswordRepository,
     getUserByEmail: GetUserByEmailRepository,
-    getForgotPasswordCode: GetForgotPasswordCodeByUserId,
+    getForgotPasswordCode: GetForgotPasswordCodeByUserIdRepository,
     deleteForgotPasswordCode: DeleteForgotPasswordCodeRepository,
   ) {
     this.updateUserPasswordRepository = updateUserPassword;

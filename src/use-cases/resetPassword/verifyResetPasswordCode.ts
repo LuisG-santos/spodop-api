@@ -1,11 +1,11 @@
 import { AppError } from "../../error/error.js";
-import type { GetForgotPasswordCodeByUserId } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
+import type { GetForgotPasswordCodeByUserIdRepository } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
 import type { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
 export class VerifyResetPasswordCodeUseCase {
-  private getForgotPasswordCodeRepository: GetForgotPasswordCodeByUserId;
+  private getForgotPasswordCodeRepository: GetForgotPasswordCodeByUserIdRepository;
   private getUserByEmailRepository: GetUserByEmailRepository;
   constructor(
-    getForgotPasswordCode: GetForgotPasswordCodeByUserId,
+    getForgotPasswordCode: GetForgotPasswordCodeByUserIdRepository,
     getUserByEmail: GetUserByEmailRepository,
   ) {
     this.getForgotPasswordCodeRepository = getForgotPasswordCode;
