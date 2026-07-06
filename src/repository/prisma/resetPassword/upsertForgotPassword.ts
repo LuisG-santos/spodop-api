@@ -9,7 +9,7 @@ export class UpsertForgotPasswordRepository {
         code,
         expiresAt,
       },
-      update: { code },
+      update: { code, expiresAt },
     });
   }
 }
