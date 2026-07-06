@@ -1,18 +1,24 @@
-import { ForgotPasswordController } from "../../controllers/resetPassword/forgotPassword.js";
-import { UpsertForgotPasswordRepository } from "../../repository/prisma/resetPassword/upsertForgotPassword.js";
+import { ResetPasswordController } from "../../controllers/resetPassword/resetPassword.js";
+import { DeleteForgotPasswordCodeRepository } from "../../repository/prisma/resetPassword/deleteForgotPasswordCode.js";
+import { GetForgotPasswordCodeByUserIdRepository } from "../../repository/prisma/resetPassword/getForgotPasswordCodeByUserId.js";
+import { UpdateUserPasswordRepository } from "../../repository/prisma/resetPassword/updateUserPassword.js";
 import { GetUserByEmailRepository } from "../../repository/prisma/user/getUserByEmail.js";
-import { ForgotPasswordUseCase } from "../../use-cases/resetPassword/forgotPassword.js";
+import { ResetUserPasswordUseCase } from "../../use-cases/resetPassword/resetPassword.js";
 
-export const makeForgotPasswordController = () => {
+export const makeResetPasswordController = () => {
+  const updateUserPasswordRepository = new UpdateUserPasswordRepository();
   const getUserByEmailRepository = new GetUserByEmailRepository();
-  const upsertForgotPasswordRepository = new UpsertForgotPasswordRepository();
-  const forgotPasswordUseCase = new ForgotPasswordUseCase(
+  const getForgotPasswordCode = new GetForgotPasswordCodeByUserIdRepository();
+  const deleteForgotPasswordCode = new DeleteForgotPasswordCodeRepository();
+  const resetUserPasswordUseCase = new ResetUserPasswordUseCase(
+    updateUserPasswordRepository,
     getUserByEmailRepository,
-    upsertForgotPasswordRepository,
+    getForgotPasswordCode,
+    deleteForgotPasswordCode,
   );
-  const forgotPasswordController = new ForgotPasswordController(
-    forgotPasswordUseCase,
+  const resetPasswordController = new ResetPasswordController(
+    resetUserPasswordUseCase,
   );
 
-  return forgotPasswordController;
+  return resetPasswordController;
 };
