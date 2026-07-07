@@ -33,11 +33,11 @@ export class UpdateUserUseCase {
         : null,
     ]);
     if (existingEmail && existingEmail.id !== userId) {
-      throw new AppError("This email already in use", 409);
+      throw new AppError("This email already in use", 409,"email");
     }
 
     if (existingPhone && existingPhone.id !== userId) {
-      throw new AppError("This phone number already in use", 409);
+      throw new AppError("This phone number already in use", 409, "phoneNumber");
     }
 
     const dataToUpdate = {

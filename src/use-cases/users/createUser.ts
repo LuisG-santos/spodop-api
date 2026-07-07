@@ -29,7 +29,7 @@ export class CreateUserUseCase {
     );
 
     if (existingUserEmail) {
-      throw new AppError("Email already in use", 409);
+      throw new AppError("Email already in use", 409, "email");
     }
 
     const existingUserPhone =
@@ -37,7 +37,7 @@ export class CreateUserUseCase {
         phoneNumberNormalized,
       );
     if (existingUserPhone) {
-      throw new AppError("Phone number already in use", 409);
+      throw new AppError("Phone number already in use", 409, "phoneNumber");
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
