@@ -11,4 +11,4 @@ export const checkIfPasswordIsValid = (password: string) => {
 
 export const checkIfIdIsValid = (id: string) => validator.isUUID(id)
 
-export const checkIfPhoneNumberIsValid = (phoneNumber: string) => validator.isMobilePhone(phoneNumber, "pt-BR", {strictMode: true})
+export const checkIfPhoneNumberIsValid = (phoneNumber: string) => validator.isMobilePhone(phoneNumber, "pt-BR")

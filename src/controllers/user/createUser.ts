@@ -5,6 +5,7 @@ import validator from "validator";
 import { AppError } from "../../error/error.js";
 import { checkIfEmailIsValid, checkIfPasswordIsValid, checkIfPhoneNumberIsValid } from "../../helpers/user.js";
 import { invalidEmailResponse, invalidPhoneNumberResponse } from "../../helpers/http.js";
+import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class CreateUserController {
   private createUserUseCase: CreateUserUseCase;
   constructor(createUser: CreateUserUseCase) {
@@ -33,8 +34,10 @@ export class CreateUserController {
       if (!checkIfEmailIsValid(params.email)) {
         return invalidEmailResponse(res)
       }
+
+      const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber)
       
-      if (!checkIfPhoneNumberIsValid(params.phoneNumber)) {
+      if (!checkIfPhoneNumberIsValid(normalizedPhoneNumber)) {
         return invalidPhoneNumberResponse(res)
       }
   
