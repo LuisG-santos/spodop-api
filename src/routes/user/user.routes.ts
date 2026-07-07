@@ -9,8 +9,8 @@ const router: Router = Router();
 const updateUserController = makeUpdateUserController();
 const getUserByIdController = makeGetUserByIdController();
 
-router.patch("/me", async(req, res) =>{
-  await updateUserController.updateUser(req,res)
+router.patch("/me",authMiddleware ,(req, res) =>{
+   updateUserController.updateUser(req,res)
 } )
 router.get("/me", authMiddleware ,(req, res) => {
    getUserByIdController.getUser(req, res);
