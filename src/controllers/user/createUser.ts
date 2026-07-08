@@ -1,10 +1,16 @@
-
 import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
 import validator from "validator";
 import { AppError } from "../../error/error.js";
-import { checkIfEmailIsValid, checkIfPasswordIsValid, checkIfPhoneNumberIsValid } from "../../helpers/user.js";
-import { invalidEmailResponse, invalidPhoneNumberResponse } from "../../helpers/http.js";
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+  checkIfPhoneNumberIsValid,
+} from "../../helpers/user.js";
+import {
+  invalidEmailResponse,
+  invalidPhoneNumberResponse,
+} from "../../helpers/http.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class CreateUserController {
   private createUserUseCase: CreateUserUseCase;
@@ -32,17 +38,17 @@ export class CreateUserController {
       }
 
       if (!checkIfEmailIsValid(params.email)) {
-        return invalidEmailResponse(res)
+        return invalidEmailResponse(res);
       }
 
-      const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber)
-      
+      const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber);
+
       if (!checkIfPhoneNumberIsValid(normalizedPhoneNumber)) {
-        return invalidPhoneNumberResponse(res)
+        return invalidPhoneNumberResponse(res);
       }
-  
+
       if (!checkIfPasswordIsValid(params.password)) {
-        return invalidPhoneNumberResponse(res)
+        return invalidPhoneNumberResponse(res);
       }
       if (params.password != params.confirmPassword) {
         return res.status(400).json({ message: "Passwords do not match" });
@@ -54,7 +60,13 @@ export class CreateUserController {
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {
-        return res.status(error.statusCode).json({ message: error.message });
+        return res
+          .status(error.statusCode)
+          .json({
+            message: error.message,
+            field: error.field,
+            code: error.code,
+          });
       }
       return res.status(500).json({ message: "Internal server error" });
     }
