@@ -1,8 +1,8 @@
-# AgroGestor — API
+# SPODOP — API
 
 > Projeto em desenvolvimento ativo
 
-Backend da plataforma **AgroGestor** — sistema web voltado ao agronegócio para monitoramento climático, sugestão de janelas de aplicação de defensivos agrícolas, gestão de propriedades e talhões.
+Backend da plataforma **SPODOP** — sistema web voltado ao agronegócio para monitoramento climático, sugestão de janelas de aplicação de defensivos agrícolas, gestão de propriedades e talhões.
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
