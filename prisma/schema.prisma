@@ -54,8 +54,8 @@ model Ownership {
   user         User          @relation(fields: [userId], references: [id])
   name         String
   totalArea    Decimal       @db.Decimal(10, 2)
-  longitude    Decimal?      @db.Decimal(9, 6)
-  latitude     Decimal?      @db.Decimal(9, 6)
+  longitude    Decimal?      @db.Decimal(11, 8)
+  latitude     Decimal?      @db.Decimal(11, 8)
   createdAt    DateTime      @default(now())
   updateAt     DateTime      @updatedAt
   fields       Field[]
