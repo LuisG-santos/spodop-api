@@ -4,12 +4,14 @@ import cors from "cors";
 import userRoutes from "./src/routes/user/user.routes.js";
 import authRoutes from "./src/routes/auth/auth.routes.js";
 import ownershipRoutes from "./src/routes/ownership/ownership.route.js"
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(cors({
-  origin: "https://spodop.com.br",
+  origin: process.env.ALLOWED_ORIGIN || "https://spodop.com.br",
   credentials: true
 }));
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
