@@ -31,7 +31,17 @@ export class LoginController {
         params.email,
         params.password,
       );
-      return res.status(200).json(result);
+
+      const { token, user } = result;
+
+      return res
+        .status(200)
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
+        .json(user);
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({ error: error.message });
