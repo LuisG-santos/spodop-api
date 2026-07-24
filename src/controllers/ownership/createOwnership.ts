@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { CreateOwnershipUseCase } from "../../use-cases/ownership/createOwnership.js";
 import { AppError } from "../../error/error.js";
+import { internalErrorResponse } from "../../helpers/http.js";
 import {
   checkIfCoordIsValid,
   checkIfNameIsValid,
@@ -75,7 +76,7 @@ export class CreateOwnershipController {
 
       console.log(error);
 
-      return res.status(500).json({ message: "Internal server error" });
+      return internalErrorResponse(res);
     }
   }
 }

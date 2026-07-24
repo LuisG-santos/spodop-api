@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { CreateUserUseCase } from "../../use-cases/users/createUser.js";
-import validator from "validator";
+import { internalErrorResponse } from "../../helpers/http.js";
 import { AppError } from "../../error/error.js";
 import {
   checkIfEmailIsValid,
@@ -60,15 +60,13 @@ export class CreateUserController {
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {
-        return res
-          .status(error.statusCode)
-          .json({
-            message: error.message,
-            field: error.field,
-            code: error.code,
-          });
+        return res.status(error.statusCode).json({
+          message: error.message,
+          field: error.field,
+          code: error.code,
+        });
       }
-      return res.status(500).json({ message: "Internal server error" });
+      return internalErrorResponse(res);
     }
   }
 }

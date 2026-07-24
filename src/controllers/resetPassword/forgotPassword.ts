@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import type { ForgotPasswordUseCase } from "../../use-cases/resetPassword/forgotPassword.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
 import { AppError } from "../../error/error.js";
+import { internalErrorResponse } from "../../helpers/http.js";
 
 export class ForgotPasswordController {
   private forgotPassworduseCase: ForgotPasswordUseCase;
@@ -29,7 +30,7 @@ export class ForgotPasswordController {
         return res.status(error.statusCode).json(error.message);
       }
       console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return internalErrorResponse(res);
     }
   }
 }

@@ -16,3 +16,7 @@ export const invalidPasswordResponse = (res: Response) => {
 export const invalidPhoneNumberResponse = (res: Response) => {
   return res.status(400).json({ message: "Phone number format is not valid" });
 };
+
+export const internalErrorResponse = (res: Response) => {
+  return res.status(500).json({ message: "Internal server error" });
+};

@@ -7,7 +7,12 @@ import {
   checkIfPasswordIsValid,
   checkIfPhoneNumberIsValid,
 } from "../../helpers/user.js";
-import { invalidEmailResponse, invalidPasswordResponse, invalidPhoneNumberResponse } from "../../helpers/http.js";
+import {
+  invalidEmailResponse,
+  invalidPasswordResponse,
+  invalidPhoneNumberResponse,
+  internalErrorResponse
+} from "../../helpers/http.js";
 import { normalizePhoneNumber } from "../../helpers/phone.js";
 export class UpdateUserController {
   private updateUserUseCase: UpdateUserUseCase;
@@ -17,7 +22,7 @@ export class UpdateUserController {
   async updateUser(req: Request, res: Response) {
     try {
       const params = req.body;
-      const userId = req.user!.sub
+      const userId = req.user!.sub;
 
       if (!checkIfIdIsValid(userId)) {
         return res.status(400).json({ message: "Id is not valid" });
@@ -27,7 +32,7 @@ export class UpdateUserController {
       const someFieldsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       );
-      
+
       if (someFieldsNotAllowed) {
         return res
           .status(400)
@@ -36,20 +41,20 @@ export class UpdateUserController {
 
       if (params.email) {
         if (!checkIfEmailIsValid(params.email)) {
-          return invalidEmailResponse(res)
+          return invalidEmailResponse(res);
         }
       }
 
       if (params.phoneNumber) {
         const normalizedPhoneNumber = normalizePhoneNumber(params.phoneNumber);
         if (!checkIfPhoneNumberIsValid(normalizedPhoneNumber)) {
-          return invalidPhoneNumberResponse(res)
+          return invalidPhoneNumberResponse(res);
         }
       }
 
       if (params.password) {
         if (!checkIfPasswordIsValid(params.password)) {
-          return invalidPasswordResponse(res)
+          return invalidPasswordResponse(res);
         }
       }
 
@@ -59,13 +64,12 @@ export class UpdateUserController {
       );
 
       return res.status(200).json(updatedUser);
-
     } catch (error) {
       console.log(error);
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({ message: error.message });
       }
-      return res.status(500).json({ message: "Internal server error" });
+      return internalErrorResponse(res);
     }
   }
 }

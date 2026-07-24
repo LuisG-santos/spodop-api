@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import type { VerifyResetPasswordCodeUseCase } from "../../use-cases/resetPassword/verifyResetPasswordCode.js";
 import { AppError } from "../../error/error.js";
 import { checkIfEmailIsValid } from "../../helpers/user.js";
-import { invalidEmailResponse } from "../../helpers/http.js";
+import { invalidEmailResponse, internalErrorResponse } from "../../helpers/http.js";
 
 export class VerifyResetPasswordCodeController {
   private verifyResetPasswordUseCase: VerifyResetPasswordCodeUseCase;
@@ -14,17 +14,17 @@ export class VerifyResetPasswordCodeController {
       const code = req.body.code;
       const email = req.body.email;
 
-      if(!checkIfEmailIsValid(email)){
-       return invalidEmailResponse(res)
+      if (!checkIfEmailIsValid(email)) {
+        return invalidEmailResponse(res);
       }
       await this.verifyResetPasswordUseCase.verifyCode(email, code);
 
-      return res.status(200).json({message: 'Code verified successfully'});
+      return res.status(200).json({ message: "Code verified successfully" });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json(error.message);
       }
-      return res.status(500).json({ message: "Internal server error" });
+      return internalErrorResponse(res);
     }
   }
 }
