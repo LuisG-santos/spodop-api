@@ -6,6 +6,7 @@ export const fetchWeather = async (lat: number, lon: number) => {
     const params = {
       latitude: lat,
       longitude: lon,
+      forecast_days: 3,
       hourly: [
         "temperature_2m",
         "precipitation_probability",
